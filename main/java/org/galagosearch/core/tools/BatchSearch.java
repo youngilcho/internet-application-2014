@@ -10,7 +10,7 @@ import org.galagosearch.core.retrieval.query.SimpleQuery;
 import org.galagosearch.core.retrieval.query.StructuredQuery;
 import org.galagosearch.tupleflow.Parameters;
 
-import scorer.termproject.youngilcho.QueryModifier;
+import scorer.termproject.junheewon.QueryModifier;
 
 /**
  *
