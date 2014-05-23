@@ -1,4 +1,4 @@
-package scorer.termproject.youngilcho;
+package scorer.termproject.beomjunshin;
 
 import java.io.IOException;
 import java.util.List;
