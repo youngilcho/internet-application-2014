@@ -1,5 +1,5 @@
 // BSD License (http://www.galagosearch.org/license)
-
+// This is git test.
 package scorer.termproject.junheewon;
 
 import java.io.IOException;

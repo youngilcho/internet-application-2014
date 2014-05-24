@@ -16,7 +16,7 @@ import org.galagosearch.core.store.DocumentStore;
 import org.galagosearch.core.store.SnippetGenerator;
 import org.galagosearch.tupleflow.Parameters;
 
-import scorer.termproject.youngilcho.QueryModifier;
+import scorer.termproject.junheewon.QueryModifier;
 
 /**
  *
