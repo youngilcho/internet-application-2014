@@ -9,7 +9,7 @@ import org.galagosearch.core.parse.Document;
 import org.galagosearch.core.parse.TagTokenizer;
 import org.galagosearch.core.store.SnippetGenerator; // TODO snippet 볼 수 없을까? 
 //import org.galagosearch.exercises.TermAssoDemo;
-import org.galagosearch.exercises.TermAssociationManager;
+import scorer.termproject.beomjunshin.TermAssociationManager;
 
 public class QueryModifier {
 	final static String CLOSER = " )";
@@ -34,8 +34,8 @@ public class QueryModifier {
 
       TermAssociationManager termAssociationManager = TermAssociationManager.get();
       termAssociationManager.init();
-      HashMap<String, Float> expandTokens = termAssociationManager.MakeAssoTermList(tokens.get(0));
-
+      HashMap<String, Float> expandTokens = termAssociationManager.MakeAssoTermList(tokens);
+      
       // original query with weight 1
       for (String token: tokens) {
 				sbuff.append("#scale:weight=");
@@ -46,14 +46,17 @@ public class QueryModifier {
 				sbuff.append(CLOSER);
 				sbuff.append(CLOSER);
 				sbuff.append(" ");
-      }
+				System.out.print(token + " ");
+      } System.out.println();
 
       if (expandTokens != null) {
         // calculate whole frequency
 	      float freqDenominator = 0; 
 	      for (String expandTokenKey: expandTokens.keySet()) {
 	      	freqDenominator += expandTokens.get(expandTokenKey);
-	      }
+	      	System.out.print(expandTokenKey + "(" + expandTokens.get(expandTokenKey) + ") "); // for debug
+	      } System.out.println(); // for debug
+
 	      // expand tokens with weight by assoValue
 	      for (String expandTokenKey: expandTokens.keySet()) {
 					sbuff.append("#scale:weight=");
