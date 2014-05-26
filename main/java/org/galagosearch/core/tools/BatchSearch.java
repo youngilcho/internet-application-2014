@@ -2,15 +2,19 @@
 package org.galagosearch.core.tools;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.galagosearch.core.retrieval.Retrieval;
 import org.galagosearch.core.retrieval.ScoredDocument;
 import org.galagosearch.core.retrieval.query.Node;
 import org.galagosearch.core.retrieval.query.SimpleQuery;
 import org.galagosearch.core.retrieval.query.StructuredQuery;
+import org.galagosearch.exercises.TermAssociationManager;
 import org.galagosearch.tupleflow.Parameters;
 
-import scorer.termproject.junheewon.QueryModifier;
+import scorer.termproject.beomjunshin.QueryModifier;
+import scorer.termproject.youngilcho.AsyncTaskService;
 
 /**
  *
@@ -36,36 +40,47 @@ public class BatchSearch {
         return String.format("%10.8f", score);
     }
 
-    public static void run(String[] args, PrintStream out) throws Exception {
+    public static void run(String[] args, final PrintStream out) throws Exception {
         // read in parameters
-        Parameters parameters = new Parameters(args);
+        final Parameters parameters = new Parameters(args);
         List<Parameters.Value> queries = parameters.list("query");
 
         // open index
-        Retrieval retrieval = Retrieval.instance(parameters.get("index"), parameters);
+        final Retrieval retrieval = Retrieval.instance(parameters.get("index"), parameters);
         
         // record results requested
-        int requested = (int) parameters.get("count", 1000);
+        final int requested = (int) parameters.get("count", 1000);
 
-        // for each query, run it, get the results, look up the docnos, print in TREC format
-        for (Parameters.Value query : queries) {
-            // parse the query
-            String queryText = query.get("text");
-         // IntApp modified.
-        	String modquery = QueryModifier.modifyQuery(queryText);
-            Node queryRoot = parseQuery(modquery, parameters);
-            queryRoot = retrieval.transformQuery(queryRoot);
-            
-            ScoredDocument[] results = retrieval.runQuery(queryRoot, requested);
+        AsyncTaskService.get().init();
+        // TermAssociationManager를 먼저 init 해둬야 함 그래야 thread safe
+        TermAssociationManager.get().init();
 
-            for (int i = 0; i < results.length; i++) {
-                String document = retrieval.getDocumentName(results[i].document);
-                double score = results[i].score;
-                int rank = i + 1;
+        for (final Parameters.Value query : queries) {
+            AsyncTaskService.get().runTask(AsyncTaskService.TAG_TERM_ASSO, new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        String queryText = query.get("text");
+                        // IntApp modified.
+                        String modquery = QueryModifier.modifyQuery(queryText);
+                        Node queryRoot = parseQuery(modquery, parameters);
+                        queryRoot = retrieval.transformQuery(queryRoot);
 
-                out.format("%s Q0 %s %d %s galago\n", query.get("number"), document, rank,
-                           formatScore(score));
-            }
+                        ScoredDocument[] results = retrieval.runQuery(queryRoot, requested);
+
+                        for (int i = 0; i < results.length; i++) {
+                            String document = retrieval.getDocumentName(results[i].document);
+                            double score = results[i].score;
+                            int rank = i + 1;
+                            System.out.print(String.format("%s Q0 %s %d %s galago\n", query.get("number"), document, rank,
+                                    formatScore(score)));
+                        }
+                    } catch (Exception ex) {
+                        Thread t = Thread.currentThread();
+                        t.getUncaughtExceptionHandler().uncaughtException(t, ex);
+                    }
+                }
+            });
         }
     }
 
