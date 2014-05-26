@@ -13,7 +13,7 @@ import org.galagosearch.core.retrieval.query.StructuredQuery;
 import org.galagosearch.exercises.TermAssociationManager;
 import org.galagosearch.tupleflow.Parameters;
 
-import scorer.termproject.beomjunshin.QueryModifier;
+import scorer.termproject.youngilcho.QueryModifier;
 import scorer.termproject.youngilcho.AsyncTaskService;
 
 /**
@@ -43,7 +43,7 @@ public class BatchSearch {
     public static void run(String[] args, final PrintStream out) throws Exception {
         // read in parameters
         final Parameters parameters = new Parameters(args);
-        List<Parameters.Value> queries = parameters.list("query");
+        final List<Parameters.Value> queries = parameters.list("query");
 
         // open index
         final Retrieval retrieval = Retrieval.instance(parameters.get("index"), parameters);
@@ -55,6 +55,7 @@ public class BatchSearch {
         // TermAssociationManager를 먼저 init 해둬야 함 그래야 thread safe
         TermAssociationManager.get().init();
 
+        final int[] asyncIndex = {0};
         for (final Parameters.Value query : queries) {
             AsyncTaskService.get().runTask(AsyncTaskService.TAG_TERM_ASSO, new Runnable() {
                 @Override
@@ -75,6 +76,11 @@ public class BatchSearch {
                             System.out.print(String.format("%s Q0 %s %d %s galago\n", query.get("number"), document, rank,
                                     formatScore(score)));
                         }
+                        asyncIndex[0]++;
+
+                        if(asyncIndex[0] == queries.size())
+                            System.exit(0);
+
                     } catch (Exception ex) {
                         Thread t = Thread.currentThread();
                         t.getUncaughtExceptionHandler().uncaughtException(t, ex);
