@@ -1,75 +1,90 @@
 package scorer.termproject.youngilcho;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import org.galagosearch.core.parse.Document;
 import org.galagosearch.core.parse.TagTokenizer;
+import org.galagosearch.core.store.SnippetGenerator; // TODO snippet 볼 수 없을까?
+//import org.galagosearch.exercises.TermAssoDemo;
 import org.galagosearch.exercises.TermAssociationManager;
 
 public class QueryModifier {
-	final static String CLOSER = " )";
-	final static String DIRICHLET_SCORER = "#feature:class=scorer.dirichlet.DirichletScorer( ";
-	final static String BM25_SCORER = "#feature:class=scorer.bm25.BM25Iterator( ";
-	final static String INTAPP_SCORER = "#feature:class=scorer.termproject.youngilcho.IntappScorer( ";
-    final static String NEW_INTAPP_SCORER = "#feature:class=scorer.termproject.NewIntappScorer( ";
+    final static String CLOSER = " )";
+    final static String DIRICHLET_SCORER = "#feature:class=scorer.dirichlet.DirichletScorer( ";
+    final static String BM25_SCORER = "#feature:class=scorer.bm25.BM25Iterator( ";
+    final static String INTAPP_SCORER = "#feature:class=scorer.termproject.youngilcho.IntappScorer( ";
 
+    public static String modifyQuery(String query) {
+        TagTokenizer tokenizer = new TagTokenizer();
+        String modQuery = query;
+        StringBuffer sbuff = new StringBuffer();
+        SnippetGenerator s = new SnippetGenerator(); // DEBUG How to use it?
 
-	public static String modifyQuery(String query) {
-		TagTokenizer tokenizer = new TagTokenizer();
-		String modQuery = query;
-		StringBuffer sbuff = new StringBuffer();
-		// first, check out that inputed query is not a complex query by checking "#" modifier in the text
-		if(query.contains("#")) {
-			return query;
-		}
+        // first, check out that inputed query is not a complex query by checking "#" modifier in the text
+        if (query.contains("#")) {
+            return query;
+        }
 
-		try {
-			Document tokenizeResult = tokenizer.tokenize(query);
-			List<String> tokens = tokenizeResult.terms;
-
+        try {
+            Document tokenizeResult = tokenizer.tokenize(query);
+            List<String> tokens = tokenizeResult.terms;
 
             TermAssociationManager termAssociationManager = TermAssociationManager.get();
-            termAssociationManager.init();
-            String[] expandTokens = termAssociationManager.MakeAssoTermList(tokens.get(0));
+            //termAssociationManager.init();
 
-			double originalTermMinWeight = 1.0;
-            for(int i = 0; i < tokens.size(); i++) {
-				double tokenWeight = (1.0 * (double)(tokens.size() - i + 1 + tokens.size() + 1) / ((double) (tokens.size() + 1) * 2.0));
+            HashMap<String, Float> expandTokens = null;
+            expandTokens = termAssociationManager.MakeAssoTermList(tokens.get(0));
 
-                originalTermMinWeight = Math.min(tokenWeight, originalTermMinWeight);
+//            for(int i = 1; i<tokens.size(); i++) {
+//                if(expandTokens == null)
+//                    break;
+//                if(expandTokens.size() < 5)
+//                    break;
+//
+//                HashMap<String, Float> expanded = termAssociationManager.MakeAssoTermList(tokens.get(i));
+//                if (expanded != null)
+//                    expandTokens.keySet().retainAll(expanded.keySet());
+//            }
 
-				// change here if you want to change term score combining policy
-				sbuff.append("#scale:weight=" +
-						tokenWeight +
-						"( ");
-				sbuff.append(INTAPP_SCORER);
-				//sbuff.append(BM25_SCORER);
-				sbuff.append(tokens.get(i));
-				sbuff.append(CLOSER);
-				sbuff.append(CLOSER);
-				sbuff.append(" ");
-			}
-
-            // 원래 입력된 term의 위치에 따른 가중치 중 가장 낮은 걸 가중치로 줌
-           for(String s : expandTokens) {
-                sbuff.append("#scale:weight=" +
-                        originalTermMinWeight * 0.4 +
-                        "( ");
+            // original query with weight 1
+            for (String token : tokens) {
+                sbuff.append("#scale:weight=");
+                sbuff.append("1");
+                sbuff.append("( ");
                 sbuff.append(INTAPP_SCORER);
-                //sbuff.append(BM25_SCORER);
-                sbuff.append(s);
+                sbuff.append(token);
                 sbuff.append(CLOSER);
                 sbuff.append(CLOSER);
                 sbuff.append(" ");
             }
 
-			if(sbuff.length() > 0) modQuery = sbuff.toString();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+            if (expandTokens != null) {
+                // calculate whole frequency
+                float freqDenominator = 0;
+                for (String expandTokenKey : expandTokens.keySet()) {
+                    freqDenominator += expandTokens.get(expandTokenKey);
+                }
+                // expand tokens with weight by assoValue
+                for (String expandTokenKey : expandTokens.keySet()) {
+                    sbuff.append("#scale:weight=");
+                    float expandTokenAssoValue = expandTokens.get(expandTokenKey);
+                    sbuff.append(expandTokenAssoValue / freqDenominator);
+                    sbuff.append("( ");
+                    sbuff.append(INTAPP_SCORER);
+                    sbuff.append(expandTokenKey);
+                    sbuff.append(CLOSER);
+                    sbuff.append(CLOSER);
+                    sbuff.append(" ");
+                }
+            }
+            if (sbuff.length() > 0) modQuery = sbuff.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-
-		return modQuery;
-	}
+        return modQuery;
+    }
 }

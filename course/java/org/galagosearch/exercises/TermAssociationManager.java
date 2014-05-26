@@ -26,6 +26,7 @@ public class TermAssociationManager {
 	private StringBuffer corpusStr = null;
 	private ArrayList<HashMap<String, Integer>> termFreqList = null;
 	private String[] topTerms = null;
+    private HashMap<String, String> stopWordByTopTerms = new HashMap<String, String>();
 	private int[] docFreq = null;
 
 	//    private ArrayList<String> documentList = new ArrayList<String>();
@@ -50,9 +51,9 @@ public class TermAssociationManager {
 
 
 		//here, set path of stopword file
-		stopwordFile="stopwords.txt";
+		stopwordFile="../stopwords.txt";
 		//here, set path of corpus file assigned to you
-		corpusFile="doc/reuter.corpus";
+		corpusFile="../doc/reuter.corpus";
 
 
 		if(stopwordList == null)
@@ -136,6 +137,7 @@ public class TermAssociationManager {
 			String term = tokenizedResult.terms.get(index);
 			// if term is in stopword list, bypass this term.
 			if(stopwordList.containsKey(term)) continue;
+            if(stopWordByTopTerms.containsKey(term)) continue;
 			if(term.length() < MINiNUM_TERM_LENGTH) continue;
 			if(!termFreqPair.containsKey(term)) termFreqPair.put(term, 1);
 			else termFreqPair.put(term, termFreqPair.get(term)+1);
@@ -167,6 +169,10 @@ public class TermAssociationManager {
 			topTerms[index]=term_frequency.get(index).term;
 			//			System.out.println(term_frequency.get(index).term+": "+term_frequency.get(index).frequency);
 			//			if(index==2)break;
+
+            if (index < 11) {
+                stopWordByTopTerms.put(term_frequency.get(index).term, "");
+            }
 		}
 
 		return topTerms;
@@ -262,7 +268,7 @@ public class TermAssociationManager {
 		for (int cnt=0; cnt < NUM_ASSO_TERM; cnt++) {
 			result.put(assoValueSorted.get(cnt).term, assoValueSorted.get(cnt).frequency);
 		}
-		
+
 		return result;
 	}
 }
