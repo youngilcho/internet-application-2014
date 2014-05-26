@@ -1,3 +1,14 @@
+TO- Do(140526)
+=============
+
+오늘 해본 것
+
+- topterms 을 살펴보고 여기서 `march`같은 키워드는 stopword로 추가시킨다(파일에 수동으로 추가하면 안됨으로 코드로 구현)
+
+todo
+
+- topterm에서 top10을 stopwords에 추가해서 expansion 하기
+
 internet-application-2014
 =========================
 
@@ -57,3 +68,5 @@ import scorer.termproject.youngilcho.QueryModifier; // 이 부분 수정해야 �
  * @author trevor
  */
 ```
+
+
