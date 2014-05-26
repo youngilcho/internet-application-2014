@@ -9,6 +9,15 @@ todo
 
 - topterm에서 top10을 stopwords에 추가해서 expansion 하기
 
+범준 시도 해본 것 (140526)
+--------------------------
+
+- 단어가 3개인 경우 `#combine(#od:1(termA termB))` 같은 방식으로 A, B 단어가 '붙어있는 상태로 순서가 유지되도록' 바꿈
+  - 그러면 balance of payments 쿼리에서 1000개 검색되던게 이제는 50개 검색됨
+- generic 머셔를 그냥 base 형태로 구현하면 오히려 안 좋아짐(해봄)
+  - 약간의 수정을 해야 현재 IntappScorer 보다 좋아질 듯
+- 앞으로 더 해볼 것: query 69개 읽고 수정하기
+
 internet-application-2014
 =========================
 
