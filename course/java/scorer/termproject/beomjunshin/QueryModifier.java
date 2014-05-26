@@ -1,6 +1,7 @@
 package scorer.termproject.beomjunshin;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -9,7 +10,8 @@ import org.galagosearch.core.parse.Document;
 import org.galagosearch.core.parse.TagTokenizer;
 import org.galagosearch.core.store.SnippetGenerator; // TODO snippet 볼 수 없을까? 
 //import org.galagosearch.exercises.TermAssoDemo;
-import scorer.termproject.beomjunshin.TermAssociationManager;
+//import scorer.termproject.beomjunshin.TermAssociationManager;
+import org.galagosearch.exercises.TermAssociationManager; // 예전걸로 돌아옴.
 
 public class QueryModifier {
 	final static String CLOSER = " )";
@@ -30,13 +32,18 @@ public class QueryModifier {
 
 		try {
 			Document tokenizeResult = tokenizer.tokenize(query);
-			List<String> tokens = tokenizeResult.terms;
+			List<String> tokens = new ArrayList<String>();
+			if (query.contains("-")) {
+				tokens.add(query);
+			} else {
+				tokens = tokenizeResult.terms;
+			}
 
       TermAssociationManager termAssociationManager = TermAssociationManager.get();
       termAssociationManager.init();
-      HashMap<String, Float> expandTokens = termAssociationManager.MakeAssoTermList(tokens);
-      
+      HashMap<String, Float> expandTokens = termAssociationManager.MakeAssoTermList(tokens.get(0));
       // original query with weight 1
+      
       for (String token: tokens) {
 				sbuff.append("#scale:weight=");
 				sbuff.append( "1" );
@@ -46,17 +53,15 @@ public class QueryModifier {
 				sbuff.append(CLOSER);
 				sbuff.append(CLOSER);
 				sbuff.append(" ");
-				System.out.print(token + " ");
-      } System.out.println();
+				//System.out.print(token + " ");
+      } //System.out.println();
 
       if (expandTokens != null) {
         // calculate whole frequency
 	      float freqDenominator = 0; 
 	      for (String expandTokenKey: expandTokens.keySet()) {
 	      	freqDenominator += expandTokens.get(expandTokenKey);
-	      	System.out.print(expandTokenKey + "(" + expandTokens.get(expandTokenKey) + ") "); // for debug
-	      } System.out.println(); // for debug
-
+	      }
 	      // expand tokens with weight by assoValue
 	      for (String expandTokenKey: expandTokens.keySet()) {
 					sbuff.append("#scale:weight=");

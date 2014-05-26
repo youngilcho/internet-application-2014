@@ -1,6 +1,6 @@
 // BSD License (http://www.galagosearch.org/license)
 
-package scorer.beomjunshin.termproject;
+package scorer.termproject.beomjunshin;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import org.galagosearch.core.util.ExtentArray;
 import org.galagosearch.tupleflow.Parameters;
 
 @RequiredStatistics(statistics = {"collectionLength", "documentCount"})
-public class IntappScorer extends ScoringFunctionIterator {
+public class IntappScorerKilho extends ScoringFunctionIterator {
 	double documentFrequency;
     double documentCount;
     double avgDocumentLength;
@@ -23,7 +23,7 @@ public class IntappScorer extends ScoringFunctionIterator {
     HashMap<Integer, ArrayList<Integer>> termPositionsMap = new HashMap<Integer, ArrayList<Integer>>();
     HashMap<Integer, Long> byteLengthMap = new HashMap<Integer, Long>();
 
-    public IntappScorer(Parameters parameters, CountIterator iterator) throws IOException {
+    public IntappScorerKilho(Parameters parameters, CountIterator iterator) throws IOException {
         super(iterator);
         
         // here you write your scoring function needed for a query

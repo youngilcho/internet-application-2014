@@ -7,7 +7,7 @@ import org.galagosearch.core.parse.Document;
 import org.galagosearch.core.parse.TagTokenizer; 
 
 // 이 코드를 QueryModifer.java 에 넣고 돌리거나 BatchSearch의 QueryModifier 선언을 QueryModifierKilho로 바꾸거나.
-public class QueryModifier { 
+public class QueryModifierKilho { 
 	final static String CLOSER = " )"; 
 	final static String DIRICHLET_SCORER = "#feature:class=scorer.dirichlet.DirichletScorer( "; 
 	final static String BM25_SCORER = "#feature:class=scorer.bm25.BM25Iterator( "; 
