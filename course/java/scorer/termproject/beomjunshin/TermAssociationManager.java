@@ -1,4 +1,4 @@
-package org.galagosearch.exercises;
+package scorer.termproject.beomjunshin;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
 
 import org.galagosearch.core.parse.Document;
@@ -26,12 +27,8 @@ public class TermAssociationManager {
 	private StringBuffer corpusStr = null;
 	private ArrayList<HashMap<String, Integer>> termFreqList = null;
 	private String[] topTerms = null;
-    private HashMap<String, String> stopWordByTopTerms = new HashMap<String, String>();
 	private int[] docFreq = null;
-
-	//    private ArrayList<String> documentList = new ArrayList<String>();
-	//    private StringBuffer corpusStr = new StringBuffer();
-
+	
 	String stopwordFile="";
 	String corpusFile="";
 	private HashMap<String, String> stopwordList = null;
@@ -51,9 +48,9 @@ public class TermAssociationManager {
 
 
 		//here, set path of stopword file
-		stopwordFile="../stopwords.txt";
+		stopwordFile="stopwords.txt";
 		//here, set path of corpus file assigned to you
-		corpusFile="../doc/reuter.corpus";
+		corpusFile="doc/news.corpus";
 
 
 		if(stopwordList == null)
@@ -137,7 +134,6 @@ public class TermAssociationManager {
 			String term = tokenizedResult.terms.get(index);
 			// if term is in stopword list, bypass this term.
 			if(stopwordList.containsKey(term)) continue;
-            if(stopWordByTopTerms.containsKey(term)) continue;
 			if(term.length() < MINiNUM_TERM_LENGTH) continue;
 			if(!termFreqPair.containsKey(term)) termFreqPair.put(term, 1);
 			else termFreqPair.put(term, termFreqPair.get(term)+1);
@@ -169,10 +165,6 @@ public class TermAssociationManager {
 			topTerms[index]=term_frequency.get(index).term;
 			//			System.out.println(term_frequency.get(index).term+": "+term_frequency.get(index).frequency);
 			//			if(index==2)break;
-
-            if (index < 11) {
-                stopWordByTopTerms.put(term_frequency.get(index).term, "");
-            }
 		}
 
 		return topTerms;
@@ -214,59 +206,65 @@ public class TermAssociationManager {
 		return term_frequency;
 	}
 
-	public HashMap<String, Float> MakeAssoTermList(String originalTerm) {
-		int indexOfTermA = 0;
-
-		for(int index=0;index<topTerms.length;index++){
-			if (topTerms[index].equals(originalTerm)) {
-				indexOfTermA = index;
-			}
-			break;
-		}
-
+	public HashMap<String, Float> MakeAssoTermList(List<String> tokens) {
 		HashMap<String, Float> assoValueList = new HashMap<String, Float>();
-		String termA=originalTerm;
-		String termB="";
-		int docFreqTermA=docFreq[indexOfTermA];
-		int docFreqTermB=0;
-		int docFreqTermAB=0;
-		for(int index2=0;index2<topTerms.length;index2++){
+		int cntDebug = 0;
+		
+		for (String originalTerm: tokens) {
+//			if (cntDebug > 0) break;
 
-			if(topTerms[indexOfTermA].equals(topTerms[index2]))continue;
+			int indexOfTermA = 0;
 
-			termB=topTerms[index2];
-			docFreqTermB=docFreq[index2];
-
-			docFreqTermAB=0;
-			for(int cnt=0;cnt<termFreqList.size();cnt++){
-				HashMap<String, Integer> termFreq=termFreqList.get(cnt);
-				if(termFreq.containsKey(termA) && termFreq.containsKey(termB))docFreqTermAB++;
+			for(int index=0;index<topTerms.length;index++){
+				if (topTerms[index].equals(originalTerm)) {
+					indexOfTermA = index;
+				}
+				break;
 			}
 
-			if (originalTerm.equals(termB)) continue; // no duplicate(beomjun)
-			if ((float) docFreqTermAB == 0) continue;
+			String termA=originalTerm;
+			String termB="";
+			int docFreqTermA=docFreq[indexOfTermA];
+			int docFreqTermB=0;
+			int docFreqTermAB=0;
+			for(int index2=0;index2<topTerms.length;index2++){
 
-			// here you make term association measures by using docFreqTermA, docFreqTermB, docFreqTermAB
-			float assoValue=0;
-			//assoValue= (float) docFreqTermAB / (float) (docFreqTermA + docFreqTermB) ; // 다이스 계수 <이게 제일 그나마 눈에 보기에 좋음>
-			//			assoValue= (float) docFreqTermAB / (float) (docFreqTermA * docFreqTermB) ; // MI . 눈으로 보기에 매우 부정확함.
-			assoValue= (float) docFreqTermAB; // 맨 처음에 했던 시도
-			assoValueList.put(termB,assoValue);
+				if(topTerms[indexOfTermA].equals(topTerms[index2]))continue;
+
+				termB=topTerms[index2];
+				docFreqTermB=docFreq[index2];
+
+				docFreqTermAB=0;
+				for(int cnt=0;cnt<termFreqList.size();cnt++){
+					HashMap<String, Integer> termFreq=termFreqList.get(cnt);
+					if(termFreq.containsKey(termA) && termFreq.containsKey(termB))docFreqTermAB++;
+				}
+
+				if (originalTerm.equals(termB)) continue; // 중복된 단어는 추가되지 않도록
+				if ((float) docFreqTermAB == 0) continue; // assoValue가 0인건 추가하지 않도록
+
+				// here you make term association measures by using docFreqTermA, docFreqTermB, docFreqTermAB
+				float assoValue=0;
+				//assoValue= (float) docFreqTermAB / (float) (docFreqTermA + docFreqTermB) ; // 다이스 계수 <이게 제일 그나마 눈에 보기에 좋음>
+				//assoValue= (float) docFreqTermAB / (float) (docFreqTermA * docFreqTermB) ; // MI . 눈으로 보기에 매우 부정확함.
+				assoValue= (float) docFreqTermAB; // 맨 처음에 했던 시도
+				
+				if (assoValueList.containsKey(termB)) assoValueList.put(termB, assoValueList.get(termB) + assoValue + 10000);
+				else assoValueList.put(termB, assoValue + 10000);
+				
+			} // topTermB end
+			cntDebug++;
 		}
 
-//		String[] result = new String[NUM_ASSO_TERM];
-//		ArrayList<TermFreq> assoValueSorted=getSortedList2(assoValueList);
-//		for (int cnt=0; cnt< NUM_ASSO_TERM ;cnt++){ // NUM_ASSO_TERM에 보여줄 단어들을 적음
-//			result[cnt] = assoValueSorted.get(cnt).term ;
-//		}
-		
-		// result with assoValue (assoValueSorted.get(cnt).frequency <=> assoValue)
 		HashMap<String, Float> result = new HashMap<String, Float>();
 		ArrayList<TermFreq> assoValueSorted=getSortedList2(assoValueList);
+
 		if (assoValueSorted.size() == 0) 
-			return null; // if no expand query then return null
+			return null; // 연관 단어가 없는 경우 null return
+		
 		for (int cnt=0; cnt < NUM_ASSO_TERM; cnt++) {
-			result.put(assoValueSorted.get(cnt).term, assoValueSorted.get(cnt).frequency);
+			if (assoValueSorted.get(cnt).frequency > 10000)
+				result.put(assoValueSorted.get(cnt).term, assoValueSorted.get(cnt).frequency % 10000);	
 		}
 
 		return result;

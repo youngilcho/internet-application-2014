@@ -1,0 +1,136 @@
+[Console output redirected to file:/Users/shastaky/Documents/workspace/galago_iaproject/doc/output.txt]
+mergers acuqisitions 
+shares(7.0) acquisition(8.0) new(9.0) march(16.0) market(8.0) pct(7.0) company(9.0) companies(9.0) merger(12.0) industry(7.0) 
+alum 
+barley 
+wheat(154.0) washington(63.0) export(71.0) tonnes(133.0) march(143.0) maize(64.0) department(72.0) grain(83.0) agriculture(76.0) 000(120.0) 
+balance of payments 
+new(261.0) march(654.0) 1986(355.0) pct(457.0) 1987(270.0) trade(313.0) billion(427.0) current(267.0) government(293.0) dlrs(439.0) 
+carcass 
+tonnes(4.0) march(4.0) remaining(4.0) weight(4.0) pct(4.0) 1986(4.0) australian(4.0) levels(4.0) four(4.0) corp(4.0) 
+cocoa 
+buffer(39.0) organization(40.0) new(54.0) march(71.0) stock(39.0) london(50.0) coffee(40.0) international(56.0) prices(41.0) rules(40.0) 
+coconut 
+march(23.0) commodity(12.0) told(14.0) oils(18.0) prices(14.0) vegetable(18.0) philippines(13.0) dlrs(14.0) world(13.0) oil(18.0) 
+coffee 
+exports(94.0) export(100.0) new(114.0) march(161.0) market(79.0) 1986(80.0) pct(89.0) trade(79.0) international(92.0) prices(105.0) 
+copper 
+zinc(32.0) new(32.0) march(66.0) 1986(33.0) april(42.0) pct(47.0) company(37.0) lead(29.0) gold(29.0) 000(46.0) 
+corn 
+wheat(275.0) washington(265.0) tonnes(199.0) march(386.0) pct(198.0) department(203.0) grain(195.0) usda(254.0) agriculture(299.0) 000(176.0) 
+cotton 
+wheat(107.0) farmers(71.0) washington(107.0) march(152.0) rice(71.0) pct(104.0) 1987(83.0) usda(82.0) agriculture(118.0) corn(104.0) 
+consumer price index 
+two(421.0) new(535.0) march(1250.0) market(500.0) 1986(543.0) pct(879.0) rise(421.0) billion(397.0) prices(655.0) dlrs(697.0) 
+crude 
+new(128.0) march(306.0) 1986(142.0) pct(176.0) prices(188.0) petroleum(133.0) 000(146.0) production(140.0) dlrs(181.0) oil(319.0) 
+us dollar 
+march(546.0) japan(281.0) market(295.0) rate(305.0) pct(353.0) trade(299.0) bank(335.0) dlrs(281.0) exchange(308.0) currency(280.0) 
+d mark 
+march(156.0) rate(111.0) pct(129.0) trade(89.0) interest(90.0) german(99.0) rates(104.0) bank(108.0) dollar(126.0) west(96.0) 
+earnings and earnings forecasts 
+new(435.0) share(621.0) march(1050.0) pct(623.0) 1986(743.0) 1987(556.0) billion(452.0) company(602.0) net(483.0) dlrs(839.0) 
+fuel oil 
+gas(344.0) two(354.0) new(388.0) march(1088.0) 1986(447.0) pct(621.0) crude(365.0) prices(480.0) 000(393.0) dlrs(559.0) 
+gasoline 
+washington(46.0) march(76.0) barrels(41.0) pct(55.0) crude(67.0) prices(41.0) petroleum(49.0) 000(44.0) energy(48.0) oil(79.0) 
+gross national product 
+new(371.0) march(995.0) rate(372.0) 1986(446.0) pct(743.0) 1987(364.0) trade(385.0) billion(434.0) government(379.0) dlrs(456.0) 
+gold 
+ounces(78.0) march(186.0) april(63.0) pct(109.0) silver(69.0) company(86.0) mine(77.0) 000(90.0) production(61.0) dlrs(87.0) 
+grain 
+wheat(262.0) washington(194.0) tonnes(283.0) march(395.0) pct(180.0) 1986(186.0) april(203.0) usda(181.0) agriculture(227.0) corn(195.0) 
+groundnut 
+palm(9.0) exports(9.0) tonnes(10.0) march(10.0) 1986(10.0) 1985(9.0) fats(9.0) sun(9.0) animal(9.0) oil(9.0) 
+heating oil 
+gas(317.0) two(321.0) new(360.0) march(1032.0) 1986(420.0) pct(569.0) crude(338.0) prices(454.0) 000(366.0) dlrs(528.0) 
+hog 
+traders(17.0) march(27.0) slaughter(16.0) mercantile(17.0) chicago(24.0) 000(15.0) cattle(16.0) head(16.0) ago(15.0) exchange(17.0) 
+housing starts 
+rose(40.0) new(51.0) march(92.0) february(37.0) 1986(43.0) pct(86.0) rise(39.0) government(38.0) 000(58.0) dlrs(41.0) 
+income 
+new(123.0) share(130.0) march(329.0) pct(180.0) 1986(212.0) 1987(131.0) company(139.0) billion(151.0) net(203.0) dlrs(251.0) 
+interest rates 
+two(465.0) new(527.0) march(1217.0) market(604.0) rate(656.0) pct(968.0) billion(522.0) bank(640.0) dlrs(598.0) exchange(495.0) 
+industrial production index 
+expected(419.0) new(476.0) march(1221.0) 1986(605.0) pct(828.0) 1987(413.0) trade(426.0) rise(394.0) prices(463.0) dlrs(523.0) 
+iron steel 
+exports(87.0) new(90.0) march(178.0) 1986(94.0) pct(119.0) trade(81.0) 1985(79.0) billion(86.0) products(73.0) dlrs(99.0) 
+unemployment 
+two(33.0) march(67.0) rate(37.0) february(36.0) 1986(40.0) pct(67.0) rise(35.0) january(35.0) 000(32.0) growth(35.0) 
+l cattle 
+new(20.0) traders(22.0) march(62.0) pct(25.0) mercantile(21.0) report(24.0) chicago(24.0) 000(27.0) head(34.0) exchange(25.0) 
+lead 
+new(80.0) march(212.0) 1986(79.0) added(85.0) pct(131.0) company(78.0) government(73.0) 000(74.0) production(74.0) dlrs(104.0) 
+leading economic indicators 
+new(334.0) march(758.0) rate(337.0) 1986(347.0) pct(586.0) trade(433.0) told(373.0) government(361.0) dlrs(336.0) growth(334.0) 
+livestock 
+two(25.0) tonnes(25.0) march(56.0) market(27.0) 1986(27.0) april(29.0) pct(35.0) agriculture(28.0) 000(24.0) production(28.0) 
+lumber 
+washington(11.0) march(15.0) canada(8.0) 1986(9.0) pct(11.0) sales(8.0) department(10.0) made(7.0) products(9.0) dlrs(13.0) 
+meal feed 
+wheat(116.0) export(86.0) tonnes(161.0) march(226.0) pct(115.0) grain(95.0) agriculture(120.0) prices(85.0) soybean(94.0) 000(132.0) 
+money exchange 
+new(541.0) march(1308.0) rate(517.0) market(718.0) pct(941.0) billion(561.0) rates(467.0) bank(705.0) foreign(470.0) dlrs(597.0) 
+money supply 
+two(322.0) new(391.0) march(850.0) rate(338.0) market(556.0) pct(686.0) billion(421.0) today(311.0) bank(529.0) dlrs(340.0) 
+natural gas 
+new(200.0) march(552.0) 1986(283.0) pct(368.0) billion(219.0) company(225.0) prices(247.0) production(197.0) dlrs(314.0) oil(449.0) 
+nickel 
+tonnes(10.0) march(22.0) 1986(9.0) april(9.0) pct(9.0) copper(14.0) january(9.0) 400(9.0) corp(10.0) 000(11.0) 
+oat 
+limited(8.0) two(10.0) estimated(9.0) 1987(11.0) program(9.0) three(10.0) increase(11.0) acreage(10.0) production(8.0) crop(10.0) 
+oilseed 
+tonnes(27.0) march(43.0) april(24.0) 1986(27.0) oilseeds(24.0) grain(26.0) shipments(24.0) soybean(36.0) 000(26.0) oil(28.0) 
+orange 
+brazil(7.0) washington(9.0) march(21.0) earlier(7.0) february(7.0) pct(9.0) department(9.0) juice(10.0) 000(7.0) frozen(10.0) 
+palm oil 
+gas(317.0) two(339.0) new(380.0) march(1127.0) 1986(464.0) pct(595.0) crude(358.0) prices(475.0) 000(446.0) dlrs(575.0) 
+petro chemicals 
+new(46.0) march(84.0) market(42.0) 1986(49.0) pct(58.0) company(39.0) billion(53.0) products(42.0) dlrs(66.0) oil(44.0) 
+rape oil 
+gas(308.0) two(316.0) new(345.0) march(1028.0) 1986(431.0) pct(548.0) crude(319.0) prices(435.0) 000(378.0) dlrs(519.0) 
+rapeseed 
+600(34.0) tonnes(70.0) march(72.0) april(37.0) 1986(39.0) grain(35.0) soybean(33.0) 000(68.0) bought(32.0) oil(40.0) 
+reserves 
+new(194.0) march(341.0) market(159.0) 1986(169.0) pct(258.0) billion(265.0) reserve(143.0) bank(138.0) government(138.0) dlrs(264.0) 
+retail 
+two(38.0) new(49.0) march(104.0) february(40.0) 1986(43.0) pct(85.0) rise(42.0) january(44.0) increase(44.0) dlrs(52.0) 
+rice 
+wheat(107.0) farmers(63.0) cotton(71.0) washington(79.0) march(161.0) pct(81.0) usda(65.0) agriculture(117.0) government(63.0) corn(84.0) 
+rubber 
+export(34.0) tonnes(34.0) exports(37.0) new(50.0) march(76.0) lower(36.0) pct(47.0) 1985(34.0) prices(45.0) 000(36.0) 
+shipping 
+reported(42.0) two(54.0) new(60.0) march(139.0) april(51.0) pct(58.0) gulf(45.0) ships(46.0) 000(50.0) oil(44.0) 
+silver 
+ounces(42.0) zinc(37.0) march(76.0) pct(37.0) company(38.0) ore(40.0) mine(43.0) gold(69.0) 000(56.0) dlrs(45.0) 
+sorghum 
+wheat(81.0) tonnes(74.0) march(100.0) pct(68.0) department(63.0) grain(75.0) usda(64.0) agriculture(74.0) soybean(73.0) corn(83.0) 
+soybean 
+wheat(112.0) tonnes(148.0) march(249.0) 1986(121.0) pct(123.0) grain(119.0) usda(110.0) agriculture(151.0) soybeans(132.0) corn(142.0) 
+soy meal 
+tonnes(74.0) march(98.0) 1986(54.0) pct(56.0) 1987(52.0) agriculture(57.0) soybean(80.0) 000(64.0) soybeans(49.0) oil(62.0) 
+soy oil 
+gas(308.0) two(323.0) new(347.0) march(1019.0) 1986(416.0) pct(550.0) crude(319.0) prices(435.0) 000(361.0) dlrs(524.0) 
+strategic metal 
+new(52.0) march(124.0) april(46.0) 1986(53.0) pct(68.0) company(58.0) 000(55.0) production(52.0) dlrs
+shipping 
+reported(42.0) two(54.0) new(60.0) march(139.0) april(51.0) pct(58.0) gulf(45.0) ships(46.0) 007.0) years(72.0) 000(119.0) dlrs(75.0) 
+sun oil 
+gas(308.0) two(322.0) new(356.0) march(1036.0) 1986(426.0) pct(557.0) crude(328.0) prices(440.0) 000(375.0) dlrs(535.0) 
+sunseed 
+tea 
+exports(44.0) new(44.0) march(53.0) 1986(41.0) pct(48.0) estimated(34.0) 1985(41.0) coffee(46.0) imports(35.0) oil(39.0) 
+tin 
+exports(21.0) march(35.0) price(20.0) pct(20.0) 1985(22.0) international(23.0) prices(22.0) countries(21.0) 000(22.0) worldl 
+tonnes(74.0) march(98.0) 1986(54.0) pct(56.0) 1987(52.0) agriculture(57.0) soybean(80.0) 000(64.0) soyblion(447.0) told(450.0) dlrs(498.0) 
+veg oil 
+gas(308.0) two(319.0) new(350.0) march(1032.0) 1986(413.0) pct(550.0) crude(325.0) prices(434.0) 000(369.0) dlrs(526.0) 
+wheat 
+washington(315.0) export(285.0) tonnes(390.0) march(571.0) department(244.0) grain(262.0) usda(244.0) agriculture(368.0) 000(319.0) corn(275.0) 
+wholesale price index 
+two(337.0) new(446.0) march(1079.0) market(403.0) 1986(454.0) pct(720.0) rise(325.0) prices(551.0) dlrs(619.0) oil(346.0) 
+yen 
+march(297.0) market(158.0) japan(271.0) dollars(164.0) tokyo(239.0) bank(209.0) dollar(263.0) japanese(175.0) exchange(170.0) currency(161.0) 
+zinc 
+march(65.0) pct(43.0) copper(32.0) company(36.0) silver(37.0) lead(60.0) mine(32.0) gold(29.0) 000(45.0) dlrs(30.0)
