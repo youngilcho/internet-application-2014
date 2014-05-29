@@ -116,6 +116,7 @@ public class IntappScorer extends ScoringFunctionIterator {
 			score = Math.log((documentCount - documentFrequency + 0.5) / (documentFrequency + 0.5)) * numerator / denominator;
 
 		} else {
+			// 젤리닉 머셔 스코어러 함수 (+ termWeight)
 			double termPosWeightSum = 0;
 			if(termPositions != null && count != 0) {
 				for(int i = 0; i < termPositions.size(); i++) {

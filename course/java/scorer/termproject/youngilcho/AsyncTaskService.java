@@ -26,9 +26,9 @@ public class AsyncTaskService {
         for(int i = 0; i < 20; i++) {
             // Login, CheckIn 패킷은 큰 Pool을 할당해준다.
             if(i == TAG_TERM_ASSO) {
-                executorServices[i] = Executors.newFixedThreadPool(32);
+                executorServices[i] = Executors.newFixedThreadPool(8);
             } else {
-                executorServices[i] = Executors.newFixedThreadPool(16);
+                executorServices[i] = Executors.newFixedThreadPool(8);
             }
         }
     }

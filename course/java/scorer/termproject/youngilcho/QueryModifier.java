@@ -1,15 +1,14 @@
 package scorer.termproject.youngilcho;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import org.galagosearch.core.parse.Document;
 import org.galagosearch.core.parse.TagTokenizer;
 import org.galagosearch.core.store.SnippetGenerator; // TODO snippet 볼 수 없을까?
 //import org.galagosearch.exercises.TermAssoDemo;
-import org.galagosearch.exercises.TermAssociationManager;
+//import scorer.termproject.beomjunshin.TermAssociationManager;
+import org.galagosearch.exercises.TermAssociationManager; // 예전걸로 돌아옴.
 
 public class QueryModifier {
     final static String CLOSER = " )";
@@ -30,26 +29,44 @@ public class QueryModifier {
 
         try {
             Document tokenizeResult = tokenizer.tokenize(query);
-            List<String> tokens = tokenizeResult.terms;
+            List<String> tokens = new ArrayList<String>();
+            if (query.contains("-") || query.contains("/")) {
+                tokens.add(query);
+            } else {
+                tokens = tokenizeResult.terms;
+            }
 
             TermAssociationManager termAssociationManager = TermAssociationManager.get();
-            //termAssociationManager.init();
-
-            HashMap<String, Float> expandTokens = null;
-            expandTokens = termAssociationManager.MakeAssoTermList(tokens.get(0));
-
-//            for(int i = 1; i<tokens.size(); i++) {
-//                if(expandTokens == null)
-//                    break;
-//                if(expandTokens.size() < 5)
-//                    break;
-//
-//                HashMap<String, Float> expanded = termAssociationManager.MakeAssoTermList(tokens.get(i));
-//                if (expanded != null)
-//                    expandTokens.keySet().retainAll(expanded.keySet());
-//            }
-
+            termAssociationManager.init();
+            HashMap<String, Float> expandTokens = termAssociationManager.MakeAssoTermList(tokens.get(0));
             // original query with weight 1
+
+
+            for (int i = 1; i < tokens.size(); i++) {
+                HashMap<String, Float> expanded = termAssociationManager.MakeAssoTermList(tokens.get(i));
+                if (expanded != null) {
+                    if (expandTokens != null) {
+                        expandTokens.putAll(expanded);
+                    } else {
+                        expandTokens = expanded;
+                    }
+                }
+
+
+            }
+
+            if(expandTokens != null) {
+                Iterator<Map.Entry<String, Float>> it = expandTokens.entrySet().iterator();
+                while (it.hasNext()) {
+                    Map.Entry<String, Float> entry = it.next();
+                    if(termAssociationManager.getTermFreq(entry.getKey()) > 2500) {
+                        it.remove();
+                    }
+                }
+            }
+
+
+
             for (String token : tokens) {
                 sbuff.append("#scale:weight=");
                 sbuff.append("1");
@@ -59,7 +76,8 @@ public class QueryModifier {
                 sbuff.append(CLOSER);
                 sbuff.append(CLOSER);
                 sbuff.append(" ");
-            }
+                //System.out.print(token + " ");
+            } //System.out.println();
 
             if (expandTokens != null) {
                 // calculate whole frequency

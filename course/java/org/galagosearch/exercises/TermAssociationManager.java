@@ -109,6 +109,17 @@ public class TermAssociationManager {
 		}
 	}
 
+    public Integer getTermFreq(String term) {
+        int returnVal = 0;
+
+        for(int cnt=0;cnt<termFreqList.size();cnt++){
+            HashMap<String, Integer> termFreq=termFreqList.get(cnt);
+            if(termFreq.containsKey(term))returnVal = returnVal + termFreq.get(term);
+        }
+
+        return returnVal;
+    }
+
 	public HashMap<String, String> makeStopWordList(String filePath) throws IOException {
 		HashMap<String, String> stopWordList = new HashMap<String, String>();
 		File stopwordfile = new File(filePath);
