@@ -51,9 +51,9 @@ public class TermAssociationManager {
 
 
 		//here, set path of stopword file
-		stopwordFile="stopwords.txt";
+		stopwordFile="../stopwords.txt";
 		//here, set path of corpus file assigned to you
-		corpusFile="doc/reuter.corpus";
+		corpusFile="../doc/reuter.corpus";
 
 
 		if(stopwordList == null)
@@ -108,6 +108,17 @@ public class TermAssociationManager {
 			else return 1;
 		}
 	}
+
+    public Integer getTermFreq(String term) {
+        int returnVal = 0;
+
+        for(int cnt=0;cnt<termFreqList.size();cnt++){
+            HashMap<String, Integer> termFreq=termFreqList.get(cnt);
+            if(termFreq.containsKey(term))returnVal = returnVal + termFreq.get(term);
+        }
+
+        return returnVal;
+    }
 
 	public HashMap<String, String> makeStopWordList(String filePath) throws IOException {
 		HashMap<String, String> stopWordList = new HashMap<String, String>();
