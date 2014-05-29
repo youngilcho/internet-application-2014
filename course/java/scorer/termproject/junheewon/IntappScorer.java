@@ -126,7 +126,7 @@ public class IntappScorer extends ScoringFunctionIterator {
 
     	  }
           termPosWeightSum += value;
-//test
+
       }
       termPosWeightSum = termPosWeightSum * count;
 
