@@ -4,12 +4,12 @@ package scorer.termproject.junheewon;
 
 import java.io.IOException;
 import java.util.ArrayList;
- import java.util.HashMap;
+import java.util.HashMap;
 
 import org.galagosearch.core.index.PositionIndexReader;
 import org.galagosearch.core.retrieval.structured.CountIterator;
 import org.galagosearch.core.retrieval.structured.RequiredStatistics;
- import org.galagosearch.core.retrieval.structured.ScoringFunctionIterator;
+import org.galagosearch.core.retrieval.structured.ScoringFunctionIterator;
 import org.galagosearch.core.types.DocumentFeature;
 import org.galagosearch.core.util.ExtentArray;
 import org.galagosearch.tupleflow.Parameters;
@@ -111,25 +111,27 @@ public class IntappScorer extends ScoringFunctionIterator {
 		  double value = Math.pow(((double)(length - termPositions.get(i)) / (double)length + 0.5), 2.0);
 
 		  if (length > avgDocumentLength) {
-
-		      if(termPositions.get(i)/(double)length < 0.03) {
+		      if(termPositions.get(i)/(double)length < 0.15) {
 		        value += value * 0.5;
-		      } else if(termPositions.get(i)/(double)length > 0.80) {
+		      } if(termPositions.get(i)/(double)length < 0.30) {
+			    value += value * 0.3;
+			  } else if(termPositions.get(i)/(double)length > 0.80) {
 			    value += value * 0.3;
 			  }
-
     	  } else {
-
-		      if(termPositions.get(i)/(double)length < 0.05) {
+		      if(termPositions.get(i)/(double)length < 0.15) {
 		        value += value * 0.5;
-		      }
-
+		      } else if(termPositions.get(i)/(double)length < 0.30) {
+			    value += value * 0.3;
+			  } else if(termPositions.get(i)/(double)length > 0.80) {
+			    value += value * 0.3;
+			  }
     	  }
+		  
           termPosWeightSum += value;
-
       }
-      termPosWeightSum = termPosWeightSum * count;
 
+      termPosWeightSum = termPosWeightSum * Math.pow(count, 2.0);
      }
 
      double numerator = termPosWeightSum * (1 + 1);
