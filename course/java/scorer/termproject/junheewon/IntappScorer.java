@@ -139,6 +139,6 @@ public class IntappScorer extends ScoringFunctionIterator {
      score = Math.pow(inverseDocumentFrequency, 2.0) * numerator / denominator;
 
      return score;
-     
+     //t
     }
 }
