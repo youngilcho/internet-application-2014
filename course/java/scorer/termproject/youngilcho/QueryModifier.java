@@ -63,8 +63,8 @@ public class QueryModifier {
                 // expand tokens with weight by assoValue
                 for (String expandTokenKey : expandTokens.keySet()) {
                     sbuff.append("#scale:weight=");
-                    float expandTokenAssoValue = expandTokens.get(expandTokenKey) * 0.1f;
-                    sbuff.append(expandTokenAssoValue / freqDenominator);
+                    float expandTokenAssoValue = expandTokens.get(expandTokenKey);
+                    sbuff.append((expandTokenAssoValue / freqDenominator) * 0.1f);
                     sbuff.append("( ");
                     sbuff.append(INTAPP_SCORER);
                     sbuff.append(expandTokenKey);
