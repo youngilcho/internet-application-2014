@@ -13,7 +13,7 @@ import org.galagosearch.core.retrieval.query.StructuredQuery;
 import org.galagosearch.exercises.TermAssociationManager;
 import org.galagosearch.tupleflow.Parameters;
 
-import scorer.termproject.beomjunshin.QueryModifier;
+import scorer.termproject.youngilcho.QueryModifier;
 import scorer.termproject.youngilcho.AsyncTaskService;
 
 /**
@@ -45,8 +45,7 @@ public class BatchSearch {
         final Parameters parameters = new Parameters(args);
         final List<Parameters.Value> queries = parameters.list("query");
 
-        // open index
-        final Retrieval retrieval = Retrieval.instance(parameters.get("index"), parameters);
+
 
         // record results requested
         final int requested = (int) parameters.get("count", 1000);
@@ -61,6 +60,9 @@ public class BatchSearch {
                 @Override
                 public void run() {
                     try {
+                        // open index
+                        final Retrieval retrieval = Retrieval.instance(parameters.get("index"), parameters);
+
                         String queryText = query.get("text");
                         // IntApp modified.
                         String modquery = QueryModifier.modifyQuery(queryText);
