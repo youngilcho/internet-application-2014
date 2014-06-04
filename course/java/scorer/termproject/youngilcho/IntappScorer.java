@@ -33,8 +33,8 @@ public class IntappScorer extends ScoringFunctionIterator {
         // here you write your scoring function needed for a query
 
 //        = new int[extentArray.getPosition()];
-        k_1 = parameters.get("k_1", 1);
-        b = parameters.get("b", 1);
+//        k_1 = parameters.get("k_1", 1);
+//        b = parameters.get("b", 1);
 
         documentFrequency = 0;
         documentCount = parameters.get("documentCount", 100000);
@@ -66,7 +66,6 @@ public class IntappScorer extends ScoringFunctionIterator {
         iterator.reset();
 
         while (!iterator.isDone()) {
-
             documentFrequency += 1;
             iterator.nextDocument();
         }
@@ -81,7 +80,6 @@ public class IntappScorer extends ScoringFunctionIterator {
 
         inverseDocumentFrequency = Math.log(numerator / denominator);
     }
-
 
     public double score(int document, int length) {
         int count = 0;
@@ -106,46 +104,41 @@ public class IntappScorer extends ScoringFunctionIterator {
         // count: number of term occurrence in the document for the query term
         // length: length of current document
 
-        //here you write your scoring function needed for a document
-        // SAMPLE CODE. replace it.
         double termPosWeightSum = 0;
         if(termPositions != null && count != 0) {
             for(int i = 0; i < termPositions.size(); i++) {
+
                 double value = Math.pow(((double)(length - termPositions.get(i)) / (double)length + 0.5), 2.0);
 
-                if(termPositions.get(i)/length < 0.05) {
-                    value += value * 0.5;
-                }
-
-                if (value > 0) {
-                    termPosWeightSum += value;
+                if (length > avgDocumentLength) {
+                    if(termPositions.get(i)/(double)length < 0.15) {
+                        value += value * 0.5;
+                    } if(termPositions.get(i)/(double)length < 0.30) {
+                        value += value * 0.3;
+                    } else if(termPositions.get(i)/(double)length > 0.80) {
+                        value += value * 0.3;
+                    }
                 } else {
-                    termPosWeightSum += 0.05;
+                    if(termPositions.get(i)/(double)length < 0.15) {
+                        value += value * 0.5;
+                    } else if(termPositions.get(i)/(double)length < 0.30) {
+                        value += value * 0.3;
+                    } else if(termPositions.get(i)/(double)length > 0.80) {
+                        value += value * 0.3;
+                    }
                 }
 
-                termPosWeightSum = termPosWeightSum * count;
+                termPosWeightSum += value;
             }
 
+            termPosWeightSum = termPosWeightSum * Math.pow(count, 2.0);
         }
 
-//     System.out.println(termListMap.get(document));
         double numerator = termPosWeightSum * (1 + 1);
         double denominator = termPosWeightSum + (1 * (1.0 - 1 + 1 * (length/avgDocumentLength)));
         score = Math.pow(inverseDocumentFrequency, 2.0) * numerator / denominator;
-        //score = documentFrequency;
 
-        // Default baseline : BM25
-//     double numerator = count * (1 + 1);
-//     double denominator = count + (1 * (1.0 - 1 + 1 * (length/avgDocumentLength)));
-//     score = numerator / denominator;
-
-        double numerator2 = count * (k_1 + 1);
-        double denominator2 = count + (k_1 * (1.0 - b + b * (length/avgDocumentLength)));
-
-        double bm25 = inverseDocumentFrequency * numerator2 / denominator2;
-
-
-        return 0.9 * score + bm25 * 0.1;
+        return score;
     }
 }
 

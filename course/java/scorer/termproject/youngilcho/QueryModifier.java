@@ -30,41 +30,16 @@ public class QueryModifier {
         try {
             Document tokenizeResult = tokenizer.tokenize(query);
             List<String> tokens = new ArrayList<String>();
-            if (query.contains("-") || query.contains("/")) {
-                tokens.add(query);
-            } else {
-                tokens = tokenizeResult.terms;
-            }
+//            if (query.contains("-") || query.contains("/")) {
+//                tokens.add(query);
+//            } else {
+            tokens = tokenizeResult.terms;
+            //}
 
             TermAssociationManager termAssociationManager = TermAssociationManager.get();
             termAssociationManager.init();
             HashMap<String, Float> expandTokens = termAssociationManager.MakeAssoTermList(tokens.get(0));
-            // original query with weight 1
-
-
-            for (int i = 1; i < tokens.size(); i++) {
-                HashMap<String, Float> expanded = termAssociationManager.MakeAssoTermList(tokens.get(i));
-                if (expanded != null) {
-                    if (expandTokens != null) {
-                        expandTokens.putAll(expanded);
-                    } else {
-                        expandTokens = expanded;
-                    }
-                }
-
-
-            }
-
-            if(expandTokens != null) {
-                Iterator<Map.Entry<String, Float>> it = expandTokens.entrySet().iterator();
-                while (it.hasNext()) {
-                    Map.Entry<String, Float> entry = it.next();
-                    if(termAssociationManager.getTermFreq(entry.getKey()) > 2500) {
-                        it.remove();
-                    }
-                }
-            }
-
+            // original query with weight
 
 
             for (String token : tokens) {
@@ -88,7 +63,7 @@ public class QueryModifier {
                 // expand tokens with weight by assoValue
                 for (String expandTokenKey : expandTokens.keySet()) {
                     sbuff.append("#scale:weight=");
-                    float expandTokenAssoValue = expandTokens.get(expandTokenKey);
+                    float expandTokenAssoValue = expandTokens.get(expandTokenKey) * 0.1f;
                     sbuff.append(expandTokenAssoValue / freqDenominator);
                     sbuff.append("( ");
                     sbuff.append(INTAPP_SCORER);
