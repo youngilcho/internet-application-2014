@@ -1,4 +1,4 @@
-package scorer.termproject.youngilcho;
+package scorer.termproject;
 
 import java.io.IOException;
 import java.util.*;
@@ -12,35 +12,41 @@ import org.galagosearch.exercises.TermAssociationManager; // 예전걸로 돌아
 
 public class QueryModifier {
     final static String CLOSER = " )";
-    final static String DIRICHLET_SCORER = "#feature:class=scorer.dirichlet.DirichletScorer( ";
-    final static String BM25_SCORER = "#feature:class=scorer.bm25.BM25Iterator( ";
-    final static String INTAPP_SCORER = "#feature:class=scorer.termproject.youngilcho.IntappScorer( ";
+    final static String INTAPP_SCORER = "#feature:class=scorer.termproject.IntappScorer( ";
 
     public static String modifyQuery(String query) {
         TagTokenizer tokenizer = new TagTokenizer();
         String modQuery = query;
         StringBuffer sbuff = new StringBuffer();
-        SnippetGenerator s = new SnippetGenerator(); // DEBUG How to use it?
 
-        // first, check out that inputed query is not a complex query by checking "#" modifier in the text
         if (query.contains("#")) {
             return query;
         }
 
         try {
             Document tokenizeResult = tokenizer.tokenize(query);
-            List<String> tokens = new ArrayList<String>();
-//            if (query.contains("-") || query.contains("/")) {
-//                tokens.add(query);
-//            } else {
-            tokens = tokenizeResult.terms;
-            //}
+            List<String> tokens = tokenizeResult.terms;
 
             TermAssociationManager termAssociationManager = TermAssociationManager.get();
             termAssociationManager.init();
             HashMap<String, Float> expandTokens = termAssociationManager.MakeAssoTermList(tokens.get(0));
+
             // original query with weight
 
+            if (query.toLowerCase().contains("d-mark"))
+                tokens.add("dm");
+
+            if (query.contains("-")) {
+                tokens.add(query.trim().replace("-", ""));
+
+                String[] temp = query.trim().split("-");
+                String initialAcronym = "";
+                for(String x : temp) {
+                    initialAcronym += x.charAt(0);
+                }
+                //tokens.add(initialAcronym);
+
+            }
 
             for (String token : tokens) {
                 sbuff.append("#scale:weight=");
@@ -64,7 +70,7 @@ public class QueryModifier {
                 for (String expandTokenKey : expandTokens.keySet()) {
                     sbuff.append("#scale:weight=");
                     float expandTokenAssoValue = expandTokens.get(expandTokenKey);
-                    sbuff.append((expandTokenAssoValue / freqDenominator) * 0.1f);
+                    sbuff.append((expandTokenAssoValue / freqDenominator) * 0.15f);
                     sbuff.append("( ");
                     sbuff.append(INTAPP_SCORER);
                     sbuff.append(expandTokenKey);

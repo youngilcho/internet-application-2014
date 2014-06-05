@@ -2,8 +2,6 @@
 package org.galagosearch.core.tools;
 
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import org.galagosearch.core.retrieval.Retrieval;
 import org.galagosearch.core.retrieval.ScoredDocument;
@@ -13,8 +11,8 @@ import org.galagosearch.core.retrieval.query.StructuredQuery;
 import org.galagosearch.exercises.TermAssociationManager;
 import org.galagosearch.tupleflow.Parameters;
 
-import scorer.termproject.youngilcho.QueryModifier;
-import scorer.termproject.youngilcho.AsyncTaskService;
+import scorer.termproject.QueryModifier;
+import scorer.termproject.AsyncTaskService;
 
 /**
  *
@@ -44,19 +42,15 @@ public class BatchSearch {
         // read in parameters
         final Parameters parameters = new Parameters(args);
         final List<Parameters.Value> queries = parameters.list("query");
-
-
-
-        // record results requested
         final int requested = (int) parameters.get("count", 1000);
 
         AsyncTaskService.get().init();
-        // TermAssociationManager를 먼저 init 해둬야 함 그래야 thread safe
+        // TermAssociationManager를 먼저 init 해둬야 함. 그래야 Thread-safe.
         TermAssociationManager.get().init();
 
         final int[] asyncIndex = {0};
         for (final Parameters.Value query : queries) {
-            AsyncTaskService.get().runTask(AsyncTaskService.TAG_TERM_ASSO, new Runnable() {
+            AsyncTaskService.get().runTask(AsyncTaskService.HIGH_PERFORMANCE, new Runnable() {
                 @Override
                 public void run() {
                     try {

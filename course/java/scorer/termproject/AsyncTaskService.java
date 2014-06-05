@@ -1,4 +1,4 @@
-package scorer.termproject.youngilcho;
+package scorer.termproject;
 
 import java.util.concurrent.*;
 
@@ -8,27 +8,28 @@ import java.util.concurrent.*;
  * Date: 13. 7. 24
  * Time: 오후 5:49
  */
+
 public class AsyncTaskService {
 
-    public static final int TAG_TERM_ASSO = 1;
-    public static final int OTHER = 2;
+    public static final int HIGH_PERFORMANCE = 0;
+    public static final int OTHER = 1;
 
     public final static AsyncTaskService get() { return singleton; }
     private final static AsyncTaskService singleton = new AsyncTaskService();
 
-    private ExecutorService executorServices[] = new ExecutorService[20];
+    private ExecutorService executorServices[] = new ExecutorService[2];
     private ScheduledExecutorService scheduledExecutorService = new ScheduledThreadPoolExecutor(4);
 
     private AsyncTaskService() {
     }
 
     public void init() {
-        for(int i = 0; i < 20; i++) {
-            // Login, CheckIn 패킷은 큰 Pool을 할당해준다.
-            if(i == TAG_TERM_ASSO) {
-                executorServices[i] = Executors.newFixedThreadPool(16);
+        for(int i = 0; i < 2; i++) {
+            // 속도 증가를 위해 총 6개의 스레드를 쓴다.(이 정도가 안전함. 랩탑 따위 저사양에서도 돌리려면)
+            if(i == HIGH_PERFORMANCE) {
+                executorServices[i] = Executors.newFixedThreadPool(6);
             } else {
-                executorServices[i] = Executors.newFixedThreadPool(8);
+                executorServices[i] = Executors.newFixedThreadPool(4);
             }
         }
     }
