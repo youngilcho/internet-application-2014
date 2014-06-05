@@ -3,6 +3,7 @@ package org.galagosearch.core.tools;
 
 import java.io.PrintStream;
 import java.util.List;
+
 import org.galagosearch.core.retrieval.Retrieval;
 import org.galagosearch.core.retrieval.ScoredDocument;
 import org.galagosearch.core.retrieval.query.Node;
@@ -15,7 +16,6 @@ import scorer.termproject.QueryModifier;
 import scorer.termproject.AsyncTaskService;
 
 /**
- *
  * @author trevor
  */
 public class BatchSearch {
@@ -74,7 +74,7 @@ public class BatchSearch {
                         }
                         asyncIndex[0]++;
 
-                        if(asyncIndex[0] == queries.size())
+                        if (asyncIndex[0] == queries.size())
                             System.exit(0);
 
                     } catch (Exception ex) {

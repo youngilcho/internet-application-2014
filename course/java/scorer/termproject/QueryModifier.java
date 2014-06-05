@@ -41,7 +41,7 @@ public class QueryModifier {
 
                 String[] temp = query.trim().split("-");
                 String initialAcronym = "";
-                for(String x : temp) {
+                for (String x : temp) {
                     initialAcronym += x.charAt(0);
                 }
                 //tokens.add(initialAcronym);

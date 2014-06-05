@@ -43,9 +43,8 @@ public class IntappScorer extends ScoringFunctionIterator {
 //        System.out.println(((PositionIndexReader.Iterator) iterator).getRecordString());
 
 
-
-        if(iterator instanceof PositionIndexReader.Iterator) {
-            while(!iterator.isDone()) {
+        if (iterator instanceof PositionIndexReader.Iterator) {
+            while (!iterator.isDone()) {
 
                 ArrayList<String> termList = new ArrayList<String>();
 
@@ -91,7 +90,7 @@ public class IntappScorer extends ScoringFunctionIterator {
     }
 
     public double scoreCount(int count, int length) {
-        double score=0;
+        double score = 0;
         int document = iterator.document();
         ArrayList<Integer> termPositions = termPositionsMap.get(document);
         ///////////////////////////////////////////////////////////////////////
@@ -105,25 +104,26 @@ public class IntappScorer extends ScoringFunctionIterator {
         // length: length of current document
 
         double termPosWeightSum = 0;
-        if(termPositions != null && count != 0) {
-            for(int i = 0; i < termPositions.size(); i++) {
+        if (termPositions != null && count != 0) {
+            for (int i = 0; i < termPositions.size(); i++) {
 
-                double value = Math.pow(((double)(length - termPositions.get(i)) / (double)length + 0.5), 2.0);
+                double value = Math.pow(((double) (length - termPositions.get(i)) / (double) length + 0.5), 2.0);
 
                 if (length > avgDocumentLength) {
-                    if(termPositions.get(i)/(double)length < 0.15) {
+                    if (termPositions.get(i) / (double) length < 0.15) {
                         value += value * 0.5;
-                    } if(termPositions.get(i)/(double)length < 0.30) {
+                    }
+                    if (termPositions.get(i) / (double) length < 0.30) {
                         value += value * 0.3;
-                    } else if(termPositions.get(i)/(double)length > 0.80) {
+                    } else if (termPositions.get(i) / (double) length > 0.80) {
                         value += value * 0.3;
                     }
                 } else {
-                    if(termPositions.get(i)/(double)length < 0.15) {
+                    if (termPositions.get(i) / (double) length < 0.15) {
                         value += value * 0.5;
-                    } else if(termPositions.get(i)/(double)length < 0.30) {
+                    } else if (termPositions.get(i) / (double) length < 0.30) {
                         value += value * 0.3;
-                    } else if(termPositions.get(i)/(double)length > 0.80) {
+                    } else if (termPositions.get(i) / (double) length > 0.80) {
                         value += value * 0.3;
                     }
                 }
@@ -135,7 +135,7 @@ public class IntappScorer extends ScoringFunctionIterator {
         }
 
         double numerator = termPosWeightSum * (1 + 1);
-        double denominator = termPosWeightSum + (1 * (1.0 - 1 + 1 * (length/avgDocumentLength)));
+        double denominator = termPosWeightSum + (1 * (1.0 - 1 + 1 * (length / avgDocumentLength)));
         score = Math.pow(inverseDocumentFrequency, 2.0) * numerator / denominator;
 
         return score;
