@@ -35,7 +35,7 @@ public class TermAssociationManager {
     private HashMap<String, String> stopwordList = null;
     private static final int MINiNUM_TERM_LENGTH = 3;
     private static final int NUM_TOP_TERM_FREQ = 3;
-    private static final int NUM_ASSO_TERM = 10;
+    private static final int NUM_ASSO_TERM = 9;
 
     TagTokenizer tn = new TagTokenizer();
 

@@ -29,7 +29,36 @@ public class QueryModifier {
 
             TermAssociationManager termAssociationManager = TermAssociationManager.get();
             termAssociationManager.init();
-            HashMap<String, Float> expandTokens = termAssociationManager.MakeAssoTermList(tokens.get(0));
+            HashMap<String, Float> expandTokens = null;
+
+            expandTokens = termAssociationManager.MakeAssoTermList(tokens.get(0));
+
+//            int rareToken = 0;
+//            int tokenIndex = 0;
+//            for(int i= 0; i<tokens.size(); i++) {
+//                if(i==0)
+//                    rareToken = termAssociationManager.getTermFreq(tokens.get(i));
+//
+//                if(rareToken > termAssociationManager.getTermFreq(tokens.get(i)) && termAssociationManager.getTermFreq(tokens.get(i)) != 0) {
+//                    rareToken = termAssociationManager.getTermFreq(tokens.get(i));
+//                    tokenIndex = i;
+//                }
+//
+//            }
+
+//            for(String s : tokens) {
+//                if(termAssociationManager.getTermFreq(s) < 300) {
+//                    if(expandTokens == null)
+//                        expandTokens = new HashMap<String, Float>();
+//
+//                    HashMap<String, Float> t = TermAssociationManager.get().MakeAssoTermList(s);
+//                    if(t != null)
+//                        expandTokens.putAll(t);
+//                }
+//            }
+
+//            expandTokens = TermAssociationManager.get().MakeAssoTermList(tokens.get(tokenIndex));
+//
 
 //            if(query.contains("-") && tokens.size() > 1 && expandTokens != null) {
 //                expandTokens.putAll(termAssociationManager.MakeAssoTermList(tokens.get(1)));
