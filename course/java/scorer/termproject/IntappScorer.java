@@ -116,7 +116,7 @@ public class IntappScorer extends ScoringFunctionIterator {
                 //대신 특정 영어기사에 대해 핵심 키워드가 어디에 분포하는지를 보여주는 것도 좋을 수 있을 듯함
                 if (length < avgDocumentLength) {
                     if(termPositions.get(i)/(double)length < 0.25) {
-                        value += value * 0.7;
+                        value += value * 0.8;
                     } else if(termPositions.get(i)/(double)length < 0.35) {
                         value += value * 0.5;
                     } else if(termPositions.get(i)/(double)length > 0.70) {
@@ -124,7 +124,7 @@ public class IntappScorer extends ScoringFunctionIterator {
                     }
                 } else {
                     if(termPositions.get(i)/(double)length < 0.15) {
-                        value += value * 0.7;
+                        value += value * 0.75;
                     } if(termPositions.get(i)/(double)length < 0.30) {
                         value += value * 0.5;
                     } else if(termPositions.get(i)/(double)length > 0.80) {
