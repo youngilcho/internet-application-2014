@@ -5,7 +5,6 @@ import java.util.*;
 
 import org.galagosearch.core.parse.Document;
 import org.galagosearch.core.parse.TagTokenizer;
-import org.galagosearch.core.store.SnippetGenerator; // TODO snippet 볼 수 없을까?
 //import org.galagosearch.exercises.TermAssoDemo;
 //import scorer.termproject.beomjunshin.TermAssociationManager;
 import org.galagosearch.exercises.TermAssociationManager; // 예전걸로 돌아옴.
@@ -30,52 +29,13 @@ public class QueryModifier {
             TermAssociationManager termAssociationManager = TermAssociationManager.get();
             termAssociationManager.init();
             HashMap<String, Float> expandTokens = null;
-
             expandTokens = termAssociationManager.MakeAssoTermList(tokens.get(0));
 
-//            int rareToken = 0;
-//            int tokenIndex = 0;
-//            for(int i= 0; i<tokens.size(); i++) {
-//                if(i==0)
-//                    rareToken = termAssociationManager.getTermFreq(tokens.get(i));
-//
-//                if(rareToken > termAssociationManager.getTermFreq(tokens.get(i)) && termAssociationManager.getTermFreq(tokens.get(i)) != 0) {
-//                    rareToken = termAssociationManager.getTermFreq(tokens.get(i));
-//                    tokenIndex = i;
-//                }
-//
-//            }
+            // If query contains one start character with hyphen, make a acronym.
+            if (tokens.size() == 2 && tokens.get(0).length() == 1)
+                tokens.add(tokens.get(0) + tokens.get(1).charAt(0));
 
-//            for(String s : tokens) {
-//                if(termAssociationManager.getTermFreq(s) < 300) {
-//                    if(expandTokens == null)
-//                        expandTokens = new HashMap<String, Float>();
-//
-//                    HashMap<String, Float> t = TermAssociationManager.get().MakeAssoTermList(s);
-//                    if(t != null)
-//                        expandTokens.putAll(t);
-//                }
-//            }
-
-//            expandTokens = TermAssociationManager.get().MakeAssoTermList(tokens.get(tokenIndex));
-//
-
-//            if(query.contains("-") && tokens.size() > 1 && expandTokens != null) {
-//                expandTokens.putAll(termAssociationManager.MakeAssoTermList(tokens.get(1)));
-//                ArrayList<TermAssociationManager.TermFreq> orderedTermList = TermAssociationManager.get().getSortedList2(expandTokens);
-//                expandTokens.clear();
-//                for(int i = 0; i < 10; i++) {
-//                    expandTokens.put(orderedTermList.get(i).term, orderedTermList.get(i).frequency);
-//                }
-//
-//            }
-
-
-            // 분석해보니 이건 오로지 d-mark가 dm rate 라는 걸로 함께 쓰이는 3개 document가 존재하기 때문이었음.. 따라서 문서가 바뀌면 의미가 있냐?
-            if (query.toLowerCase().contains("d-mark"))
-                tokens.add("dm");
-
-            // 쿼리가 세 단어 이상이면서 중간에 of 가 없으면 두문자를 생성해서 토큰에 추가해봄(소폭 상승. eg Customer Price Index)
+            // If query contains 3 or more words, make a acronym.
             if (tokens.size() > 2 && !tokens.contains("of") && !tokens.contains("and")) {
                 String initialAcronym = "";
                 for (String x : tokens) {
@@ -84,17 +44,9 @@ public class QueryModifier {
                 tokens.add(initialAcronym);
             }
 
-
+            // If query contains hyphen(-), just remove hyphen add ato token list.
             if (query.contains("-")) {
-                // 중간에 하이픈이 있는 쿼리는 하이픈만 빼고 붙여서 토큰에 추가함(점수 오름)
                 tokens.add(query.trim().replace("-", ""));
-                // d-mark가 dm rate로 쓰인 것처럼 하이픈이 있는 애들을 두문자 처리 해보았으나 점수 향상에 도움이 안되서 생략.
-//                String[] temp = query.trim().split("-");
-//                String initialAcronym = "";
-//                for (String x : temp) {
-//                    initialAcronym += x.charAt(0);
-//                }
-//                tokens.add(initialAcronym);
             }
 
             for (String token : tokens) {
@@ -106,20 +58,30 @@ public class QueryModifier {
                 sbuff.append(CLOSER);
                 sbuff.append(CLOSER);
                 sbuff.append(" ");
-                //System.out.print(token + " ");
-            } //System.out.println();
 
+            }
             if (expandTokens != null) {
-                // calculate whole frequency
+                // Calculate whole frequency
                 float freqDenominator = 0;
                 for (String expandTokenKey : expandTokens.keySet()) {
                     freqDenominator += expandTokens.get(expandTokenKey);
                 }
-                // expand tokens with weight by assoValue
+
+                // Expand tokens to querystring with weight by assoValue
                 for (String expandTokenKey : expandTokens.keySet()) {
-                    sbuff.append("#scale:weight=");
                     float expandTokenAssoValue = expandTokens.get(expandTokenKey);
-                    sbuff.append((expandTokenAssoValue / freqDenominator) * 0.15f);
+                    float incentive = (expandTokenAssoValue / freqDenominator) * 0.15f;
+
+                    // Check Levenshtein-Distance and add incentives.
+                    if (calculateLevenshteinDistance(tokens.get(0), expandTokenKey) == 0) {
+                        continue;
+                    }
+                    else if (calculateLevenshteinDistance(tokens.get(0), expandTokenKey) < 2) {
+                        incentive = incentive * 2;
+                    }
+
+                    sbuff.append("#scale:weight=");
+                    sbuff.append(incentive);
                     sbuff.append("( ");
                     sbuff.append(INTAPP_SCORER);
                     sbuff.append(expandTokenKey);
@@ -134,5 +96,37 @@ public class QueryModifier {
         }
 
         return modQuery;
+    }
+
+    public static int calculateLevenshteinDistance(String s0, String s1) {
+        int len0 = s0.length()+1;
+        int len1 = s1.length()+1;
+
+        int[] cost = new int[len0];
+        int[] newcost = new int[len0];
+
+        for(int i=0;i<len0;i++) cost[i]=i;
+
+        for(int j=1;j<len1;j++) {
+
+            newcost[0]=j-1;
+
+            for(int i=1;i<len0;i++) {
+
+                // matching current letters in both strings
+                int match = (s0.charAt(i-1)==s1.charAt(j-1))?0:1;
+
+                // computing cost for each transformation
+                int cost_replace = cost[i-1]+match;
+                int cost_insert  = cost[i]+1;
+                int cost_delete  = newcost[i-1]+1;
+
+                // keep minimum cost
+                newcost[i] = Math.min(Math.min(cost_insert, cost_delete),cost_replace );
+            }
+            int[] swap=cost; cost=newcost; newcost=swap;
+        }
+        // the distance is the cost for transforming all letters in both strings
+        return cost[len0-1];
     }
 }

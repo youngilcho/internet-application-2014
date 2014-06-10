@@ -27,7 +27,7 @@ public class AsyncTaskService {
         for(int i = 0; i < 2; i++) {
             // 속도 증가를 위해 총 6개의 스레드를 쓴다.(이 정도가 안전함. 랩탑 따위 저사양에서도 돌리려면)
             if(i == HIGH_PERFORMANCE) {
-                executorServices[i] = Executors.newFixedThreadPool(3);
+                executorServices[i] = Executors.newFixedThreadPool(6);
             } else {
                 executorServices[i] = Executors.newFixedThreadPool(4);
             }
