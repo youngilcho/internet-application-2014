@@ -5,9 +5,7 @@ import java.util.*;
 
 import org.galagosearch.core.parse.Document;
 import org.galagosearch.core.parse.TagTokenizer;
-//import org.galagosearch.exercises.TermAssoDemo;
-//import scorer.termproject.beomjunshin.TermAssociationManager;
-import org.galagosearch.exercises.TermAssociationManager; // 예전걸로 돌아옴.
+import org.galagosearch.exercises.TermAssociationManager;
 
 public class QueryModifier {
     final static String CLOSER = " )";
@@ -75,8 +73,7 @@ public class QueryModifier {
                     // Check Levenshtein-Distance and add incentives.
                     if (calculateLevenshteinDistance(tokens.get(0), expandTokenKey) == 0) {
                         continue;
-                    }
-                    else if (calculateLevenshteinDistance(tokens.get(0), expandTokenKey) < 2) {
+                    } else if (calculateLevenshteinDistance(tokens.get(0), expandTokenKey) < 2) {
                         incentive = incentive * 2;
                     }
 
@@ -98,35 +95,42 @@ public class QueryModifier {
         return modQuery;
     }
 
+    /**
+     * 두 문자열 사이에 Levenshtein 거리를 측정하는 함수 구현체
+     *
+     * @param s0 문자열 1
+     * @param s1 문자열 2
+     * @return Levenshtein 거리
+     */
     public static int calculateLevenshteinDistance(String s0, String s1) {
-        int len0 = s0.length()+1;
-        int len1 = s1.length()+1;
+        int len0 = s0.length() + 1;
+        int len1 = s1.length() + 1;
 
         int[] cost = new int[len0];
         int[] newcost = new int[len0];
 
-        for(int i=0;i<len0;i++) cost[i]=i;
+        for (int i = 0; i < len0; i++) cost[i] = i;
 
-        for(int j=1;j<len1;j++) {
+        for (int j = 1; j < len1; j++) {
 
-            newcost[0]=j-1;
+            newcost[0] = j - 1;
 
-            for(int i=1;i<len0;i++) {
+            for (int i = 1; i < len0; i++) {
 
-                // matching current letters in both strings
-                int match = (s0.charAt(i-1)==s1.charAt(j-1))?0:1;
+                int match = (s0.charAt(i - 1) == s1.charAt(j - 1)) ? 0 : 1;
 
-                // computing cost for each transformation
-                int cost_replace = cost[i-1]+match;
-                int cost_insert  = cost[i]+1;
-                int cost_delete  = newcost[i-1]+1;
+                int cost_replace = cost[i - 1] + match;
+                int cost_insert = cost[i] + 1;
+                int cost_delete = newcost[i - 1] + 1;
 
                 // keep minimum cost
-                newcost[i] = Math.min(Math.min(cost_insert, cost_delete),cost_replace );
+                newcost[i] = Math.min(Math.min(cost_insert, cost_delete), cost_replace);
             }
-            int[] swap=cost; cost=newcost; newcost=swap;
+            int[] swap = cost;
+            cost = newcost;
+            newcost = swap;
         }
         // the distance is the cost for transforming all letters in both strings
-        return cost[len0-1];
+        return cost[len0 - 1];
     }
 }
