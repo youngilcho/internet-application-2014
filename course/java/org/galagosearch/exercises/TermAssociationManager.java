@@ -48,7 +48,7 @@ public class TermAssociationManager {
         }
 
         //here, set path of stopword file
-        stopwordFile = "../stopwords.txt";
+        stopwordFile = "../doc/stopwords.txt";
         //here, set path of corpus file assigned to you
         corpusFile = "../doc/reuter.corpus";
 
